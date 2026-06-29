@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossa História ❤️</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+    <style>
+        :root {
+            --primary: #ff2d55;
+            --primary-light: #ffb3c6;
+            --bg-gradient: radial-gradient(circle at top, #1f0026, #07000a 80%);
+            --card-bg: rgba(42, 0, 51, 0.45); 
+            --glass-border: rgba(255, 45, 85, 0.25);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            color: #f5f5f5;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 0.5px;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100vw;
+            box-sizing: border-box;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(ellipse at 60% 35%, #7a1165 0%, #3d0050 45%, #150020 100%);
+        }
+
+        #canvas-particulas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        #login {
+            position: relative;
+            z-index: 1;
+        }
+
+        #login {
+            text-align: center;
+            width: 100%;
+            max-width: 380px;
+            padding: 40px 25px;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(255, 45, 85, 0.15);
+        }
+
+        #login h1 {
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 25px;
+            color: var(--primary-light);
+        }
+
+        input {
+            padding: 14px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            font-size: 16px;
+            width: 85%;
+            max-width: 260px;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s;
+            margin-bottom: 25px;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(255, 45, 85, 0.4);
+        }
+
+        button {
+            padding: 12px 35px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+            box-shadow: 0 4px 15px rgba(255, 45, 85, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 45, 85, 0.7);
+        }
+
+        #telaPergunta {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+
+        .janela-retro {
+            background: #000;
+            border: 3px solid #fff;
+            padding: 30px;
+            box-shadow: 10px 10px 0px #222;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            font-family: 'Press Start 2P', monospace;
+            z-index: 5;
+            position: relative;
+        }
+
+        .janela-retro h2 {
+            font-family: 'Press Start 2P', monospace;
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .botoes-love {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            height: 60px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .btn-love {
+            font-family: 'Press Start 2P', monospace;
+            padding: 10px 25px;
+            font-size: 1rem;
+            border: 3px solid #fff;
+            background: #000;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .btn-love:hover {
+            background: #fff;
+            color: #000;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #btnYes {
+            position: relative;
+            z-index: 6;
+        }
+
+        #btnNo {
+            position: absolute;
+            right: 20px;
+            transition: all 0.15s ease;
+            touch-action: none;
+            z-index: 7;
+        }
+
+        #telaLoveYouSucesso {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 10000;
+            overflow: hidden;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* CORRIGIDO: Forçando o fundo repetido a ocupar 100% da tela real */
+/* NOVA ABORDAGEM: Forçando preenchimento absoluto em todas as direções */
+        .fundo-love-repetido {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100% !important;
+            height: 100% !important;
+            opacity: 0.75; 
+            font-family: 'Press Start 2P', monospace;
+            font-size: 13px;
+            line-height: 2;
+            color: #ff2d55;
+            user-select: none;
+            overflow: hidden;
+            text-shadow: 0 0 10px #ff2d55, 0 0 20px #ff2d55;
+            padding: 15px;
+            box-sizing: border-box;
+            word-break: break-all;
+            z-index: 10001;
+        }
+
+        .centro-love {
+            position: relative;
+            z-index: 10002;
+            text-align: center;
+            font-family: 'Press Start 2P', monospace;
+            animation: pulsar 1s infinite alternate;
+        }
+
+        .centro-love h1 {
+            font-family: 'Press Start 2P', monospace;
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px #ff2d55, 0 0 30px #ff2d55;
+        }
+
+        .centro-love .coracao-grande {
+            font-size: 95px;
+            display: inline-block;
+            filter: drop-shadow(0 0 20px #ff2d55);
+        }
+
+        @keyframes pulsar {
+            from { transform: scale(0.92); }
+            to { transform: scale(1.08); }
+        }
+
+        #conteudo {
+            display: none;
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .main-title {
+            text-align: center;
+            color: var(--primary-light);
+            font-size: 2.8rem;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(255, 179, 198, 0.3);
+        }
+
+        .player {
+            max-width: 420px;
+            margin: 0 auto 40px auto;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 20px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .capa {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            object-fit: cover;
+        }
+
+        .rotando {
+            animation: spin 8s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .info { flex: 1; }
+        .info strong { font-size: 16px; color: #fff; }
+        .info small { color: #ccc; }
+
+        .barra {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 12px 0 6px 0;
+            cursor: pointer;
+        }
+
+        .barra-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            border-radius: 10px;
+            transition: width 0.1s linear;
+        }
+
+        .tempo {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #a0a0a0;
+            margin-bottom: 10px;
+        }
+
+        .btn-play { padding: 6px 18px; font-size: 13px; }
+
+        .timeline {
+            position: relative;
+            max-width: 520px;
+            margin: 40px auto;
+            padding-left: 35px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--primary-light), transparent);
+        }
+
+        .evento {
+            position: relative;
+            margin-bottom: 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .evento:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(255, 45, 85, 0.15);
+        }
+
+        .divisor {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -8px 0 10px 0;
+            opacity: 0.75;
+        }
+
+        .divisor svg {
+            width: 260px;
+            height: 48px;
+            overflow: visible;
+        }
+
+        .evento::before {
+            content: '❤️';
+            position: absolute;
+            left: -42px;
+            top: 18px;
+            font-size: 14px;
+            background: #07000a;
+            border-radius: 50%;
+            padding: 2px;
+        }
+
+        .evento h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--primary-light);
+            font-size: 1.2rem;
+        }
+
+        .evento h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: #f5f5f5;
+            margin-top: 12px;
+            margin-bottom: 0;
+            font-weight: 400;
+            text-align: left;
+        }
+
+        .media-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 14px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+        }
+
+        .evento img, .evento video, .card video, .card img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .evento img:hover, .evento video:hover { transform: scale(1.04); }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            border-radius: 24px;
+            margin: 30px auto;
+            max-width: 520px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .card h2 { color: var(--primary-light); margin-top: 0; }
+
+        #contador {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 45, 85, 0.6);
+            margin: 5px 0 0 0;
+        }
+
+        .data-juntos-label {
+            font-size: 0.85rem;
+            color: var(--primary-light);
+            opacity: 0.8;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .love-text {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            font-weight: 300;
+            color: #f0f0f0;
+            text-align: justify;
+        }
+
+        .coracao-flutuante {
+            position: fixed;
+            bottom: -60px;
+            pointer-events: none;
+            z-index: -1;
+            user-select: none;
+            line-height: 1;
+            animation: subir linear forwards;
+        }
+
+        @keyframes subir {
+            0%   { transform: translateY(0)      rotate(-10deg); opacity: 0; }
+            8%   { opacity: 1; }
+            50%  { transform: translateY(-50vh)  rotate(10deg); }
+            92%  { opacity: 1; }
+            100% { transform: translateY(-110vh) rotate(-5deg); opacity: 0; }
+        }
+
+        .container-carta {
+            margin: 40px auto;
+            text-align: center;
+        }
+
+        .icone-carta {
+            font-size: 50px;
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 0 10px rgba(255, 45, 85, 0.4));
+        }
+
+        .icone-carta:hover {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .carta-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 20000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .carta-modal {
+            background: #fff;
+            color: #222;
+            padding: 40px 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 20px 50px rgba(255, 45, 85, 0.3);
+            position: relative;
+            transform: scale(0.7);
+            transition: transform 0.5s ease;
+            text-align: center;
+        }
+
+        .carta-modal h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .carta-modal p {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #444;
+            text-align: justify;
+        }
+
+        .btn-fechar-carta {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 22px;
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            box-shadow: none;
+            padding: 5px;
+            transition: color 0.2s;
+        }
+
+        .btn-fechar-carta:hover {
+            color: var(--primary);
+            transform: none;
+            box-shadow: none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="login-container" id="telaLogin">
+    <canvas id="canvas-particulas"></canvas>
+    <div id="login">
+        <h1>Área Exclusiva</h1>
+        <input type="password" id="senha" placeholder="Digite a senha do casal...">
+        <br>
+        <button onclick="entrar()">Entrar</button>
+    </div>
+</div>
+
+<div id="telaPergunta">
+    <div class="janela-retro">
+        <h2>Do you love me?</h2>
+        <div class="botoes-love">
+            <button class="btn-love" id="btnYes" onclick="aceitouAmor()">Yes</button>
+            <button class="btn-love" id="btnNo" onmouseover="fugaNo()" ontouchstart="fugaNo(event)" onclick="fugaNo(event)">No</button>
+        </div>
+    </div>
+
+    <div id="telaLoveYouSucesso">
+        <div class="fundo-love-repetido" id="fundoRepetido"></div>
+        <div class="centro-love">
+            <h1>LOVE YOU</h1>
+            <span class="coracao-grande">❤️</span>
+        </div>
+    </div>
+</div>
+
+<div id="conteudo">
+
+    <h1 class="main-title">Pedro & Laura</h1>
+
+    <audio id="musica" src="Oração.mp3" preload="auto"></audio>
+
+    <div class="player">
+        <img src="capa.png" class="capa" id="capa">
+        <div class="info">
+            <strong>Oração</strong><br>
+            <small>A Banda Mais Bonita da Cidade</small>
+            <div class="barra" id="barra-container">
+                <div class="barra-fill" id="barra"></div>
+            </div>
+            <div class="tempo">
+                <span id="tempo">0:00</span>
+                <span id="duracao">...</span>
+            </div>
+            <button class="btn-play" id="btnPlay" onclick="toggleMusica()">▶ Play</button>
+        </div>
+    </div>
+
+    <div class="timeline">
+
+        <div class="evento" data-aos="fade-up">
+            <h3>🎥 Uma das nossas saidinhas</h3>
+            <div class="media-container">
+                <video autoplay muted loop playsinline>
+                    <source src="videocasal.mp4" type="video/mp4">
+                </video>
+            </div>
+            <h2>Isso vai ficar pra sempre no meu coração ❤️</h2>
+        </div>
+
+        <div class="divisor" data-aos="fade-in">
+            <svg viewBox="0 0 280 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 28 C30 28, 40 10, 60 18 C75 24, 85 32, 108 22" stroke="#e8567a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M172 22 C195 32, 205 24, 220 18 C240 10, 250 28, 270 28" stroke="#e8567a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M140 14 C140 11, 137 8, 133 8 C129 8, 126 11.5, 126 15 C126 21, 133 27, 140 32 C147 27, 154 21, 154 15 C154 11.5, 151 8, 147 8 C143 8, 140 11, 140 14 Z" fill="#e8567a"/>
+                <path d="M108 18 C108 16.5, 107 15, 105.5 15 C104 15, 103 16.5, 103 18 C103 20.5, 105.5 23, 108 25 C110.5 23, 113 20.5, 113 18 C113 16.5, 112 15, 110.5 15 C109 15, 108 16.5, 108 18 Z" fill="#e8567a" opacity="0.7"/>
+                <path d="M172 22 C172 20, 171 18.5, 169.5 18.5 C168 18.5, 167 20, 167 22 C167 24.5, 169.5 27, 172 29 C174.5 27, 177 24.5, 177 22 C177 20, 176 18.5, 174.5 18.5 C173 18.5, 172 20, 172 22 Z" fill="#e8567a" opacity="0.7"/>
+            </svg>
+        </div>
+
+        <div class="evento" data-aos="fade-up">
+            <h3>📸 Primeira foto juntos</h3>
+            <div class="media-container">
+                <img src="fotocasal2.png" alt="Primeira foto">
+            </div>
+            <h2>primeira de muitas</h2>
+        </div>
+
+        <div class="divisor" data-aos="fade-in">
+            <svg viewBox="0 0 280 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 28 C30 28, 40 10, 60 18 C75 24, 85 32, 108 22" stroke="#e8567a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M172 22 C195 32, 205 24, 220 18 C240 10, 250 28, 270 28" stroke="#e8567a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M140 14 C140 11, 137 8, 133 8 C129 8, 126 11.5, 126 15 C126 21, 133 27, 140 32 C147 27, 154 21, 154 15 C154 11.5, 151 8, 147 8 C143 8, 140 11, 140 14 Z" fill="#e8567a"/>
+                <path d="M108 18 C108 16.5, 107 15, 105.5 15 C104 15, 103 16.5, 103 18 C103 20.5, 105.5 23, 108 25 C110.5 23, 113 20.5, 113 18 C113 16.5, 112 15, 110.5 15 C109 15, 108 16.5, 108 18 Z" fill="#e8567a" opacity="0.7"/>
+                <path d="M172 22 C172 20, 171 18.5, 169.5 18.5 C168 18.5, 167 20, 167 22 C167 24.5, 169.5 27, 172 29 C174.5 27, 177 24.5, 177 22 C177 20, 176 18.5, 174.5 18.5 C173 18.5, 172 20, 172 22 Z" fill="#e8567a" opacity="0.7"/>
+            </svg>
+        </div>
+
+        <div class="evento" data-aos="fade-up">
+            <h3>💍 unidos</h3>
+            <div class="media-container">
+                <img src="aliançaa.png" alt="Alianças">
+            </div>
+            <h2>Com certeza inesquecível</h2>
+        </div>
+
+        <div class="divisor" data-aos="fade-in">
+            <svg viewBox="0 0 280 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 28 C30 28, 40 10, 60 18 C75 24, 85 32, 108 22" stroke="#e8567a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M172 22 C195 32, 205 24, 220 18 C240 10, 250 28, 270 28" stroke="#e8567a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M140 14 C140 11, 137 8, 133 8 C129 8, 126 11.5, 126 15 C126 21, 133 27, 140 32 C147 27, 154 21, 154 15 C154 11.5, 151 8, 147 8 C143 8, 140 11, 140 14 Z" fill="#e8567a"/>
+                <path d="M108 18 C108 16.5, 107 15, 105.5 15 C104 15, 103 16.5, 103 18 C103 20.5, 105.5 23, 108 25 C110.5 23, 113 20.5, 113 18 C113 16.5, 112 15, 110.5 15 C109 15, 108 16.5, 108 18 Z" fill="#e8567a" opacity="0.7"/>
+                <path d="M172 22 C172 20, 171 18.5, 169.5 18.5 C168 18.5, 167 20, 167 22 C167 24.5, 169.5 27, 172 29 C174.5 27, 177 24.5, 177 22 C177 20, 176 18.5, 174.5 18.5 C173 18.5, 172 20, 172 22 Z" fill="#e8567a" opacity="0.7"/>
+            </svg>
+        </div>
+
+        <div class="evento" data-aos="fade-up">
+            <h3>Você me completa 😺</h3>
+            <div class="media-container">
+                <img src="junto.png" alt="Foto fofa">
+            </div>
+            <h2>De todos os jeitos</h2>
+        </div>
+
+        <div class="divisor" data-aos="fade-in">
+            <svg viewBox="0 0 280 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 28 C30 28, 40 10, 60 18 C75 24, 85 32, 108 22" stroke="#e8567a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M172 22 C195 32, 205 24, 220 18 C240 10, 250 28, 270 28" stroke="#e8567a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M140 14 C140 11, 137 8, 133 8 C129 8, 126 11.5, 126 15 C126 21, 133 27, 140 32 C147 27, 154 21, 154 15 C154 11.5, 151 8, 147 8 C143 8, 140 11, 140 14 Z" fill="#e8567a"/>
+                <path d="M108 18 C108 16.5, 107 15, 105.5 15 C104 15, 103 16.5, 103 18 C103 20.5, 105.5 23, 108 25 C110.5 23, 113 20.5, 113 18 C113 16.5, 112 15, 110.5 15 C109 15, 108 16.5, 108 18 Z" fill="#e8567a" opacity="0.7"/>
+                <path d="M172 22 C172 20, 171 18.5, 169.5 18.5 C168 18.5, 167 20, 167 22 C167 24.5, 169.5 27, 172 29 C174.5 27, 177 24.5, 177 22 C177 20, 176 18.5, 174.5 18.5 C173 18.5, 172 20, 172 22 Z" fill="#e8567a" opacity="0.7"/>
+            </svg>
+        </div>
+
+        <div class="evento" data-aos="fade-up">
+            <h3>Até o mais simples com você</h3>
+            <div class="media-container">
+                <img src="espelho.png" alt="espelho">
+            </div>
+            <h2>É marcante pra mim❤️</h2>
+        </div>
+
+        <div class="divisor" data-aos="fade-in">
+            <svg viewBox="0 0 280 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 28 C30 28, 40 10, 60 18 C75 24, 85 32, 108 22" stroke="#e8567a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M172 22 C195 32, 205 24, 220 18 C240 10, 250 28, 270 28" stroke="#e8567a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M140 14 C140 11, 137 8, 133 8 C129 8, 126 11.5, 126 15 C126 21, 133 27, 140 32 C147 27, 154 21, 154 15 C154 11.5, 151 8, 147 8 C143 8, 140 11, 140 14 Z" fill="#e8567a"/>
+                <path d="M108 18 C108 16.5, 107 15, 105.5 15 C104 15, 103 16.5, 103 18 C103 20.5, 105.5 23, 108 25 C110.5 23, 113 20.5, 113 18 C113 16.5, 112 15, 110.5 15 C109 15, 108 16.5, 108 18 Z" fill="#e8567a" opacity="0.7"/>
+                <path d="M172 22 C172 20, 171 18.5, 169.5 18.5 C168 18.5, 167 20, 167 22 C167 24.5, 169.5 27, 172 29 C174.5 27, 177 24.5, 177 22 C177 20, 176 18.5, 174.5 18.5 C173 18.5, 172 20, 172 22 Z" fill="#e8567a" opacity="0.7"/>
+            </svg>
+        </div>
+
+        <div class="evento" data-aos="fade-up">
+            <h3>Nosso primeiro filho</h3>
+            <div class="media-container">
+                <img src="gatu.png" alt="bobinhos">
+            </div>
+            <h2>Neném😺</h2>
+        </div>
+
+        <div class="divisor" data-aos="fade-in">
+            <svg viewBox="0 0 280 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 28 C30 28, 40 10, 60 18 C75 24, 85 32, 108 22" stroke="#e8567a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M172 22 C195 32, 205 24, 220 18 C240 10, 250 28, 270 28" stroke="#e8567a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M140 14 C140 11, 137 8, 133 8 C129 8, 126 11.5, 126 15 C126 21, 133 27, 140 32 C147 27, 154 21, 154 15 C154 11.5, 151 8, 147 8 C143 8, 140 11, 140 14 Z" fill="#e8567a"/>
+                <path d="M108 18 C108 16.5, 107 15, 105.5 15 C104 15, 103 16.5, 103 18 C103 20.5, 105.5 23, 108 25 C110.5 23, 113 20.5, 113 18 C113 16.5, 112 15, 110.5 15 C109 15, 108 16.5, 108 18 Z" fill="#e8567a" opacity="0.7"/>
+                <path d="M172 22 C172 20, 171 18.5, 169.5 18.5 C168 18.5, 167 20, 167 22 C167 24.5, 169.5 27, 172 29 C174.5 27, 177 24.5, 177 22 C177 20, 176 18.5, 174.5 18.5 C173 18.5, 172 20, 172 22 Z" fill="#e8567a" opacity="0.7"/>
+            </svg>
+        </div>
+
+        <div class="evento" data-aos="fade-up">
+            <h3>Quando conheceu minha mãe</h3>
+            <div class="media-container">
+                <img src="commae.png" alt="juntos">
+            </div>
+            <h2>Ela adorou você!</h2>
+        </div>
+
+        <div class="divisor" data-aos="fade-in">
+            <svg viewBox="0 0 280 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 28 C30 28, 40 10, 60 18 C75 24, 85 32, 108 22" stroke="#e8567a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M172 22 C195 32, 205 24, 220 18 C240 10, 250 28, 270 28" stroke="#e8567a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M140 14 C140 11, 137 8, 133 8 C129 8, 126 11.5, 126 15 C126 21, 133 27, 140 32 C147 27, 154 21, 154 15 C154 11.5, 151 8, 147 8 C143 8, 140 11, 140 14 Z" fill="#e8567a"/>
+                <path d="M108 18 C108 16.5, 107 15, 105.5 15 C104 15, 103 16.5, 103 18 C103 20.5, 105.5 23, 108 25 C110.5 23, 113 20.5, 113 18 C113 16.5, 112 15, 110.5 15 C109 15, 108 16.5, 108 18 Z" fill="#e8567a" opacity="0.7"/>
+                <path d="M172 22 C172 20, 171 18.5, 169.5 18.5 C168 18.5, 167 20, 167 22 C167 24.5, 169.5 27, 172 29 C174.5 27, 177 24.5, 177 22 C177 20, 176 18.5, 174.5 18.5 C173 18.5, 172 20, 172 22 Z" fill="#e8567a" opacity="0.7"/>
+            </svg>
+        </div>
+
+        <div class="evento" data-aos="fade-up">
+            <h3>No melhor lugar que eu poderia ir</h3>
+            <div class="media-container">
+                <img src="igreja.png" alt="igreja">
+            </div>
+            <h2>Nossa segunda casa❤️</h2>
+        </div>
+
+        <div class="divisor" data-aos="fade-in">
+            <svg viewBox="0 0 280 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 28 C30 28, 40 10, 60 18 C75 24, 85 32, 108 22" stroke="#e8567a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M172 22 C195 32, 205 24, 220 18 C240 10, 250 28, 270 28" stroke="#e8567a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M140 14 C140 11, 137 8, 133 8 C129 8, 126 11.5, 126 15 C126 21, 133 27, 140 32 C147 27, 154 21, 154 15 C154 11.5, 151 8, 147 8 C143 8, 140 11, 140 14 Z" fill="#e8567a"/>
+                <path d="M108 18 C108 16.5, 107 15, 105.5 15 C104 15, 103 16.5, 103 18 C103 20.5, 105.5 23, 108 25 C110.5 23, 113 20.5, 113 18 C113 16.5, 112 15, 110.5 15 C109 15, 108 16.5, 108 18 Z" fill="#e8567a" opacity="0.7"/>
+                <path d="M172 22 C172 20, 171 18.5, 169.5 18.5 C168 18.5, 167 20, 167 22 C167 24.5, 169.5 27, 172 29 C174.5 27, 177 24.5, 177 22 C177 20, 176 18.5, 174.5 18.5 C173 18.5, 172 20, 172 22 Z" fill="#e8567a" opacity="0.7"/>
+            </svg>
+        </div>
+
+        <div class="evento" data-aos="fade-up">
+            <h3>Eu te amo meu amor❤️</h3>
+            <div class="media-container">
+                <img src="sempre.png" alt="sempre">
+            </div>
+            <h2>Estarei com você pra sempre!</h2>
+        </div>
+
+    </div>
+
+    <div class="card" data-aos="zoom-in">
+        <h2>⏱️ P+L juntos há:</h2>
+        <span class="data-juntos-label">juntos desde 12/06/2024</span>
+        <p id="contador">Calculando...</p>
+    </div>
+
+    <div class="card" data-aos="zoom-in">
+        <h2>❤️ Pra Você ❤️</h2>
+        <p class="love-text">
+            De todas as coisas boas que já me aconteceram, você sempre vai ser a maior e melhor de todas. Olhar para trás e ver tudo o que a gente já construiu, cada risada do nada, cada momento bobo no dia a dia e cada plano que a gente desenha juntos, só me dá a certeza de que o meu lugar favorito no mundo é do seu lado. Obrigado por ser minha parceria, meu porto seguro e o motivo do meu sorriso mais sincero. Te amo hoje, amanhã e em cada detalhe da nossa história.❤️
+        </p>
+        <div class="media-container" style="max-width: 180px; margin: 20px auto 0 auto;">
+            <img src="cato.png" alt="Cato">
+        </div>
+    </div>
+
+    <div class="card" data-aos="zoom-in">
+        <h2>🎥 Um momento nosso</h2>
+        <div class="media-container">
+            <video autoplay muted loop playsinline>
+                <source src="videosaindo.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+
+    <div class="container-carta" data-aos="fade-up">
+        <div class="icone-carta" onclick="abrirCarta()">✉️</div>
+    </div>
+
+</div>
+
+<div class="carta-overlay" id="overlayCarta">
+    <div class="carta-modal" id="modalCarta">
+        <button class="btn-fechar-carta" onclick="fecharCarta()">✕</button>
+        <h3>Uma Carta Especial 📜</h3>
+        <p>
+            Ei meu amor, se você encontrou essa cartinha escondida aqui no final do site, saiba que ela foi deixada com todo o carinho do mundo. Cada linha desse código, cada foto e cada detalhe foi pensado para te lembrar do quanto você é especial para mim. Você é meu porto seguro e nossa história é meu capítulo favorito. Te amo infinitamente! ❤️
+        </p>
+    </div>
+</div>
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>
+/* PONTILHINHOS DE FUNDO - TELA DE LOGIN */
+(function() {
+    const canvas = document.getElementById("canvas-particulas");
+    const ctx = canvas.getContext("2d");
+
+    let particulas = [];
+
+    function resize() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    function criarParticula() {
+        const raio = Math.random() * 1.8 + 0.4;
+        const rosa = Math.random() > 0.5;
+        return {
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            raio: raio,
+            opacidade: Math.random() * 0.6 + 0.2,
+            piscando: Math.random() * Math.PI * 2,
+            velocidadePiscar: Math.random() * 0.015 + 0.005,
+            cor: rosa
+                ? `rgba(255, 100, 160, `
+                : `rgba(220, 150, 255, `
+        };
+    }
+
+    for (let i = 0; i < 180; i++) {
+        particulas.push(criarParticula());
+    }
+
+    function animar() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particulas.forEach(p => {
+            p.piscando += p.velocidadePiscar;
+            let opacidadeAtual = p.opacidade + Math.sin(p.piscando) * 0.15;
+            if(opacidadeAtual < 0.1) opacidadeAtual = 0.1;
+            if(opacidadeAtual > 0.8) opacidadeAtual = 0.8;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.raio, 0, Math.PI * 2);
+            ctx.fillStyle = p.cor + opacidadeAtual + ")";
+            ctx.fill();
+        });
+
+        requestAnimationFrame(animar);
+    }
+    animar();
+})();
+
+/* LÓGICA DO PLAY/PAUSE DO AUDIO */
+const musica = document.getElementById('musica');
+const btnPlay = document.getElementById('btnPlay');
+const capa = document.getElementById('capa');
+const barra = document.getElementById('barra');
+const barraContainer = document.getElementById('barra-container');
+const tempoTxt = document.getElementById('tempo');
+const duracaoTxt = document.getElementById('duracao');
+
+function toggleMusica() {
+    if (musica.paused) {
+        musica.play();
+        btnPlay.innerHTML = '⏸ Pause';
+        capa.classList.add('rotando');
+    } else {
+        musica.pause();
+        btnPlay.innerHTML = '▶ Play';
+        capa.classList.remove('rotando');
+    }
+}
+
+musica.addEventListener('timeupdate', () => {
+    const pct = (musica.currentTime / musica.duration) * 100;
+    barra.style.width = pct + '%';
+    
+    let curM = Math.floor(musica.currentTime / 60);
+    let curS = Math.floor(musica.currentTime % 60);
+    if(curS < 10) curS = '0' + curS;
+    tempoTxt.innerHTML = `${curM}:${curS}`;
+});
+
+musica.addEventListener('loadedmetadata', () => {
+    let durM = Math.floor(musica.duration / 60);
+    let durS = Math.floor(musica.duration % 60);
+    if(durS < 10) durS = '0' + durS;
+    duracaoTxt.innerHTML = `${durM}:${durS}`;
+});
+
+barraContainer.addEventListener('click', (e) => {
+    const larguraMural = barraContainer.clientWidth;
+    const cliqueX = e.offsetX;
+    const duracaoTotal = musica.duration;
+    musica.currentTime = (cliqueX / larguraMural) * duracaoTotal;
+});
+
+/* LÓGICA DE LOGIN E FLUXO */
+const dataInicio = new Date(2024, 5, 12, 0, 0, 0);
+
+function entrar() {
+    const senha = document.getElementById("senha").value;
+    if(senha === "1206") {
+        document.getElementById("telaLogin").style.display = "none";
+        document.getElementById("telaPergunta").style.display = "flex";
+    } else {
+        alert("Senha incorreta...");
+    }
+}
+
+function fugaNo(e) {
+    if(e) e.preventDefault();
+    const btnNo = document.getElementById("btnNo");
+    const container = document.querySelector(".botoes-love");
+    
+    const x = Math.random() * (container.clientWidth - btnNo.clientWidth);
+    const y = Math.random() * (container.clientHeight - btnNo.clientHeight) - 100;
+    
+    btnNo.style.position = "absolute";
+    btnNo.style.left = x + "px";
+    btnNo.style.top = y + "px";
+}
+
+function aceitouAmor() {
+    const fundo = document.getElementById("fundoRepetido");
+    let txt = "";
+    // Aumentado ligeiramente a quantidade de repetições para garantir tela cheia em resoluções altas
+    for(let i=0; i<1500; i++) {
+        txt += "LOVE YOU ";
+    }
+    fundo.innerHTML = txt;
+
+    document.getElementById("telaLoveYouSucesso").style.display = "flex";
+
+    setTimeout(() => {
+        document.getElementById("telaPergunta").style.display = "none";
+        document.getElementById("conteudo").style.display = "block";
+        
+        AOS.init({ duration: 900, once: true });
+        
+        setInterval(atualizarContador, 1000);
+        setInterval(criarCoracao, 350);
+        
+        musica.play().then(() => {
+            btnPlay.innerHTML = '⏸ Pause';
+            capa.classList.add('rotando');
+        }).catch(err => console.log("Auto-play barrado pelo browser."));
+        
+    }, 2800);
+}
+
+function atualizarContador() {
+    const agora = new Date();
+    const dif = agora - dataInicio;
+
+    const dias = Math.floor(dif / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((dif % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((dif % (1000 * 60 * 60)) / (1000 * 60));
+    const segundos = Math.floor((dif % (1000 * 60)) / 1000);
+
+    document.getElementById("contador").innerHTML = 
+        `${dias} dias, ${horas}h ${minutes}m ${segundos}s`;
+}
+
+function criarCoracao() {
+    const c = document.createElement("div");
+    c.classList.add("coracao-flutuante");
+    c.innerHTML = Math.random() > 0.5 ? "❤️" : "💖";
+    
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.fontSize = Math.random() * 18 + 12 + "px";
+    
+    const duracao = Math.random() * 4 + 4;
+    c.style.animationDuration = duracao + "s";
+    c.style.opacity = Math.random() * 0.7 + 0.3;
+
+    document.body.appendChild(c);
+
+    setTimeout(() => { c.remove(); }, duracao * 1000);
+}
+
+/* LÓGICA DO SISTEMA DA CARTA INTERATIVA */
+function abrirCarta() {
+    const overlay = document.getElementById("overlayCarta");
+    const modal = document.getElementById("modalCarta");
+    
+    overlay.style.display = "flex";
+    setTimeout(() => {
+        overlay.style.opacity = "1";
+        modal.style.transform = "scale(1)";
+    }, 10);
+}
+
+function fecharCarta() {
+    const overlay = document.getElementById("overlayCarta");
+    const modal = document.getElementById("modalCarta");
+    
+    overlay.style.opacity = "0";
+    modal.style.transform = "scale(0.7)";
+    
+    setTimeout(() => {
+        overlay.style.display = "none";
+    }, 500);
+}
+</script>
+
+</body>
+</html>
